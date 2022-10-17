@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>github_html入口文件</title>
+
+
+  <!--vue \ axios-->
+  <script src="/vue.js"></script>
+  <script src="/demo/src/main/resources/static/js/axios-0.18.0.js"></script>
+
+
+  <!--MD5 加密-->
+  <script src="/demo/src/main/resources/static/js/md5.min.js"></script>
+  <script src="/demo/src/main/resources/static/js/index.js"></script>
+  <script type="text/javascript" src="/demo/src/main/resources/static/js/jquery.min.js"></script>
+
+  <!--ElementUI-->
+  <script src="/demo/src/main/resources/static/js/index.js"></script>
+  <!-- 引入样式 -->
+  <!-- 引入ElementUI样式 -->
+  <link rel="stylesheet" href="/demo/src/main/resources/static/element-ui/lib/theme-chalk/index.css">
+  <link rel="stylesheet" href="indexUser.css"/>
+</head>
+<body>
+  <div id="app">
+    <div class="welcomeText">
+      <div style="color: blue" >你  好</div>
+      <div></div>
+      <div style="color: red"> GitHub！</div>
+      <a href="/demo/src/main/resources/static/pages/login.html">登录</a>
+    </div>
+
+    <div class="study">
+      <!--学习div-->
+      <div class="study-div">
+        <a href="/demo/src/main/resources/static/pages/study-div.html">学习div</a>
+      </div>
+
+
+    </div>
+
+  </div>
+
+  <script>
+    /*
+      window.onload() 方法用于在网页加载完毕后立刻执行的操作，即当 HTML 文档加载完毕后，立刻执行某个方法。
+      window.onload() 通常用于 <body> 元素，在页面完全载入后(包括图片、css文件等等)执行脚本代码。*/
+    window.onload = function (){
+      // alert("HTML 文档加载完毕...")
+    }
+    new Vue ({
+      el: "#app",
+
+
+      //钩子函数：VUE对象初始化完成后，自动执行
+      created() {
+        // alert("VUE对象初始化完成,页面加载中...")
+      },
+    })
+
+
+
+  </script>
+</body>
+</html>

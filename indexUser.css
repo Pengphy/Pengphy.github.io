@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    display: flex;
+    flex-direction: column;
+
+    /*纵轴居中轴*/
+    /*justify-content: center;*/
+    /*横轴向右停靠align-items: end;*/
+    /*align-items: center;*/
+    /*具体参数*/
+    height: 100vh;
+    /*加入之后,无法弹性放大缩小width: 180vh;*/
+
+    background: url("/images/1.jpeg") no-repeat;
+    background-size: cover;
+}
+
+
+/*html设置文字位置的方法：
+首先使用position属性设置文字元素的定位类型（绝对定位absolute或固定定位）；
+然后使用top、bottom(底部)、left和right属性设置文字元素偏移值，进而设置文字元素的位置。*/
+.welcomeText {
+    position: absolute;
+    top: 200px;
+    left: 150px;
+}
+
+
+
+div {
+    /*div常用属性: Height:设置DIV的高度；Width:设置DIV的宽度。*/
+    height: 50px;
+}
