@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>品牌</title>
+
+    <!--vue \ axios-->
+    <script src="../js/vue.js"></script>
+    <script src="../js/axios-0.18.0.js"></script>
+
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!--MD5-->
+    <script src="../js/md5.min.js"></script>
+
+    <!--ElementUI-->
+    <script src="../js/index.js"></script>
+    <!-- 引入ElementUI样式 -->
+    <link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+<!--    <link rel="stylesheet" href="../css/style.css">-->
+
+</head>
+<body>
+    <div id="app">
+
+        <div class="content-header">
+            <h1>品牌管理</h1>
+        </div>
+
+        <div class="app-container">
+
+            <div class="box">
+
+                <!---01-条件查询    三个部件      没有重置框      class="filter-item"-->
+<!--                <div class="filter-container">-->
+
+<!--                    <el-select placeholder="当前状态" v-model="pagination.status" class="filter-item">-->
+<!--                         <el-option label="启用" value="启用"></el-option>-->
+<!--                         <el-option label="停售" value="禁用"></el-option>-->
+<!--                    </el-select>-->
+
+<!--                    <el-input placeholder="企业名称" v-model="pagination.companyName" style="width: 200px;" class="filter-item"></el-input>-->
+<!--                    <el-input placeholder="品牌名称" v-model="pagination.brandName" style="width: 200px;" class="filter-item"></el-input>-->
+<!--                    <el-input placeholder="备注"    v-model="pagination.description" style="width: 200px;" class="filter-item"></el-input>-->
+
+<!--                    <el-button @click="getAll()" class="dalfBut">查询</el-button>-->
+<!--                    <el-button type="primary" class="butT" @click="handleCreate()">新建</el-button>-->
+<!--                </div>-->
+                <!---01-条件查询    三个部件      重置按钮      :model="pagination" ref='ruleForm' -->
+                <div id="brandQueryDiv">
+                    <el-form :inline="true" :model="pagination" ref='ruleForm' class="demo-form-inline">
+                        <el-form-item label="当前状态" prop="status">
+                            <el-select v-model="pagination.status" placeholder="当前状态">
+                                <el-option label="启用" value="启用"></el-option>
+                                <el-option label="停售" value="禁用"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="企业名称" prop="companyName">
+                            <el-input v-model="pagination.companyName" placeholder="企业名称"></el-input>
+                        </el-form-item>
+                        <el-form-item label="品牌名称" prop="brandName">
+                            <el-input v-model="pagination.brandName" placeholder="品牌名称"></el-input>
+                        </el-form-item>
+                        <el-form-item label="备注" prop="description">
+                            <el-input v-model="pagination.description" placeholder="备注"></el-input>
+                        </el-form-item>
+
+                        <el-form-item>
+                            <el-button type="primary" @click="getAll()">查询</el-button>
+                            <el-button type="danger" @click="onReset('ruleForm')">重置</el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+
+                <!--新增  按钮-->
+                <el-button type="primary" class="butT" @click="handleCreate()">新建</el-button>
+
+                <!---02-当前页的数据，展示页面    三个部件                   :data="dataList"-->
+                <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
+                    <el-table-column type="index" align="center" label="序号"></el-table-column>
+
+                    <el-table-column prop="companyName" label="企业名称"   align="center"></el-table-column>
+                    <el-table-column prop="brandName"   label="品牌名称"   align="center"></el-table-column>
+                    <el-table-column prop="ordered"     label="排序"      align="center"></el-table-column>
+                    <el-table-column prop="description" label="备注"   align="center"></el-table-column>
+                    <el-table-column prop="status"      label="当前状态"   align="center"></el-table-column>
+
+                    <el-table-column label="操作" align="center">
+                        <template slot-scope="scope">
+                            <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
+                            <el-button type="danger"  size="mini" @click="handleDelete(scope.row)">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <!---03-分页组件       三个部件         pagination: {//分页相关模型数据,//条件查询的属性 }-->
+                <div class="pagination-container">
+                    <el-pagination
+                            class="pagination"
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+
+                            :current-page="pagination.currentPage"
+                            :page-size="pagination.pageSize"
+
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :page-sizes="[2, 5, 10, 20, 40, 80, 100, 200]"
+                            :total="pagination.total">
+                    </el-pagination>
+
+                </div>
+
+                <!--TODO 插入规则问题：必填项，以及ordered是否为数字的校验问题 -->
+                <!---04-新增标签弹层 -->
+                <div class="add-form">
+
+                    <el-dialog title="新增品牌" :visible.sync="dialogFormVisible">
+                        <el-form :model="formData" :rules="addFromRules" ref="addRuleForm" label-width="100px" class="demo-ruleForm">
+
+                            <el-form-item label="企业名称" prop="companyName">
+                                <el-input v-model="formData.companyName"></el-input>
+                            </el-form-item>
+                            <el-form-item label="品牌名称" prop="brandName">
+                                <el-input v-model="formData.brandName"></el-input>
+                            </el-form-item>
+
+                            <el-form-item label="排序" prop="ordered">
+                                <!--数字类型的验证需要在 v-model 处加上 .number 的修饰符，
+                            这是 Vue 自身提供的用于将绑定值转化为 number 类型的修饰符。-->
+                                <el-input v-model.number="formData.ordered"></el-input>
+                            </el-form-item>
+                            <el-form-item label="备注" prop="description">
+                                <el-input type="textarea" v-model="formData.description"></el-input>
+                            </el-form-item>
+                            <el-form-item label="状态" prop="status">
+                                <el-switch active-value="启用"
+                                           inactive-value="禁用"
+                                           v-model="formData.status">
+                                </el-switch>
+                            </el-form-item>
+                            <el-form-item>
+                                <!--<el-button disabled={this.}   type="primary" @click="handleAdd()">确定</el-button>-->
+                                <el-button  type="primary" @click="handleAdd()">确定</el-button>
+                                <el-button @click="onReset('addRuleForm')">重置</el-button>
+                            </el-form-item>
+                        </el-form>
+
+                        <div slot="footer" class="dialog-footer">
+                            <el-button @click="cancel()">取消</el-button>
+                        </div>
+                    </el-dialog>
+                </div>
+
+
+                <!--TODO 编辑规则问题：必填项，以及ordered是否为数字的校验问题 -->
+                <!---05-编辑标签弹层 -->
+                <div class="add-form">
+
+                    <el-dialog title="编辑品牌" :visible.sync="dialogFormVisible4Edit">
+                        <el-form ref="dataEditForm" :model="formData" :rules="rules" label-position="right" label-width="100px">
+                            <el-row>
+
+                                <el-col :span="12">
+                                    <el-form-item label="企业名称" prop="companyName">
+                                        <el-input v-model="formData.companyName"></el-input>
+                                    </el-form-item>
+                                </el-col>
+
+                                <el-col :span="12">
+                                    <el-form-item label="品牌名称" prop="brandName">
+                                        <el-input v-model="formData.brandName"></el-input>
+                                    </el-form-item>
+                                </el-col>
+
+                                <el-col :span="12">
+                                    <el-form-item label="排序" prop="ordered">
+                                        <el-input v-model="formData.ordered"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+
+                            <el-row>
+                                <el-col :span="24">
+                                    <el-form-item label="备注">
+                                        <el-input v-model="formData.description" type="textarea"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                            <el-row>
+                                <el-col>
+                                    <el-form-item label="状态">
+                                        <el-switch active-value="启用"
+                                                   inactive-value="禁用"
+                                                   v-model="formData.status"></el-switch>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                        </el-form>
+
+                        <div slot="footer" class="dialog-footer">
+                            <el-button type="primary" @click="handleEdit()">确定</el-button>
+                            <el-button @click="cancel()">取消</el-button>
+                        </div>
+
+                    </el-dialog>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+
+        new Vue({
+            el: "#app",
+            data:{
+
+                //02-当前页的数据，展示页面 部件一 三个部件
+                <!--当前页的数据，展示页面  :data="dataList"-->
+                dataList: [],//当前页要展示的列表数据
+
+                formData: {},//表单数据
+
+                dialogFormVisible: false,//添加表单是否可见
+                dialogFormVisible4Edit:false,//编辑表单是否可见
+
+                //-01-条件查询
+                //-03-分页组件
+                pagination: {
+                    //-03-分页组件 部件一  三个部件
+                    //分页相关模型数据
+                    currentPage: 1, //当前页码
+                    pageSize: 5,    //每页显示的记录数
+                    total: 0,       //总记录数
+
+                    //-01-条件查询: 部件一 条件查询的属性   三个部件
+                    id: "",
+                    brandName: "",
+                    companyName: "",
+                    ordered: "",
+                    description: "",
+                    status: "",
+                },
+
+
+                // checkOrdered : (rule, value, callback) => {
+                //     if (!value) {
+                //         return callback(new Error('排序不能为空'));
+                //     }
+                //     setTimeout(() => {
+                //         if (!Number.isInteger(value)) {
+                //             callback(new Error('请输入数字值'));
+                //         } else {
+                //             if (value < 0) {
+                //                 callback(new Error('必须大于0'));
+                //             } else {
+                //                 callback();
+                //             }
+                //         }
+                //     }, 1000);
+                // },
+
+                // 自定义规则
+                addFromRules: {
+                    companyName: [
+                        { required: true, message: '请输入企业名称', trigger: 'change' },
+                        { min: 2, max: 5, message: '长度需大于 2 个字符', trigger: ['change'] }
+                    ],
+                    brandName: [
+                        { required: true, message: '请输入品牌名称', trigger: 'change' }
+                    ],
+                    // 数字类型的验证需要在 v-model 处加上 .number 的修饰符，
+                    // 这是 Vue 自身提供的用于将绑定值转化为 number 类型的修饰符。
+                    ordered: [
+                        // { validator: checkOrdered, trigger: 'blur' }
+                        { required: true, message: '请填写排序值' , trigger: 'change'   },
+                        { type: 'number', message: '排序必须为数字值', trigger: 'change'  },
+                    ],
+                },
+
+
+            },
+
+            //钩子函数：VUE对象初始化完成后，自动执行
+            created() {
+                //调用查询全部数据的操作
+                this.getAll();
+            },
+
+            methods: {
+                //-01-条件查询 部件三  三个部件
+                getAll() {
+                    //组织参数
+                    params = "?status=" + this.pagination.status;
+                    params += "&companyName=" + this.pagination.companyName;
+                    params += "&brandName=" + this.pagination.brandName;
+                    params += "&description=" + this.pagination.description;
+
+
+                    console.log("params:" + params)
+                    //发送请求
+                    axios.get("/brands/"+this.pagination.currentPage+"/"+this.pagination.pageSize+params).then((res)=>{
+                        //分页布局的数据绑定：
+                        this.pagination.currentPage =   res.data.rdata.current;
+                        this.pagination.pageSize =      res.data.rdata.size;
+
+                        this.dataList =                 res.data.rdata.records;
+                        this.pagination.total =         res.data.rdata.total;
+                    })
+                },
+
+                //-03-分页组件  部件二   三个部件
+                //分页工具
+                handleSizeChange(pageSize) {
+                    // 重新设置每页显示的条数
+                    this.pagination.pageSize  = pageSize;
+                    this.getAll();
+                },
+                //-03-分页组件 部件三    三个部件
+                //切换页码
+                handleCurrentChange(currentPage) {
+                    //1.修改页码值为当前选中的页码
+                    this.pagination.currentPage = currentPage;
+                    //2.执行查询
+                    this.getAll();
+                },
+
+
+
+                //取消
+                cancel(){
+                    this.dialogFormVisible = false;
+                    this.dialogFormVisible4Edit = false;
+                    this.$message.info("当前操作已取消！");
+                },
+
+                //重置表单
+                resetForm() {
+                    this.formData = {};
+                },
+                //重置搜索表单
+                onReset(formName) {
+                    this.$refs[formName].resetFields();
+                },
+
+                //-01-条件查询: 部件二  三个部件
+                handleCreate() {
+                    this.dialogFormVisible = true;
+                    //重置上次填写的数据
+                    this.resetForm();
+                },
+
+                //添加
+                handleAdd () {
+                    axios.post("/brands", this.formData).then((res)=>{
+
+                        //判断是否添加成功
+                        if(res.data.flag){
+                            //1.关闭弹层
+                            this.dialogFormVisible = false;
+                            this.$message.success(res.data.msg);
+                        }else{
+                            this.$message.error(res.data.msg);
+                        }
+
+                    }).finally(()=>{
+                        //2.重新加载数据
+                        this.getAll();
+                    });
+                },
+
+                //02-当前页的数据，展示页面 部件二   三个部件
+                //弹出编辑窗口
+                handleUpdate(row) {
+                    //数据回显
+                    axios.get("/brands/"+row.id).then((res)=>{
+                        if(res.data.flag && res.data.rdata != null){
+                            this.dialogFormVisible4Edit = true;
+                            this.formData = res.data.rdata;
+                        }else{
+                            this.$message.error("数据同步失败，自动刷新！")
+                        }
+                    }).finally(()=>{
+                        this.getAll();
+                    });
+
+                },
+                //弹出的编辑表单中的 确认按钮  确认后触发 修改
+                handleEdit() {
+                    console.log("修改！");
+                    //alert("修改");
+                    axios.put("/brands", this.formData).then((res)=>{
+                        if(res.data.flag){
+                            this.$message.success(res.data.msg);
+                            //1.关闭弹层
+                            this.dialogFormVisible4Edit = false;
+                        }else{
+                            this.$message.error(res.data.msg);
+                        }
+                    }).finally(()=>{
+                        //2.重新加载数据
+                        this.getAll();
+                    })
+
+                },
+
+
+                //02-当前页的数据，展示页面 部件三  三个部件
+                // 删除
+                handleDelete(row) {
+                    this.$confirm("此操作将永久删除当前信息，是否继续？", "提示", {type: "info"}).then(()=>{
+
+                        axios.delete("/brands/"+row.id).then((res)=>{
+                            if(res.data.flag){
+                                this.$message.success(res.data.msg);
+                            }else{
+                                this.$message.error("数据同步失败，自动刷新！");
+                            }
+                        }).finally(()=>{
+                            this.getAll();
+                        });
+
+                    }).catch(()=>{
+                        this.$message.info("取消操作！");
+                    });
+                },
+
+
+            }
+        })
+    </script>
+</body>
+</html>

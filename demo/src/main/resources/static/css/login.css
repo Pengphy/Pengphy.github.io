@@ -1,0 +1,150 @@
+@charset "UTF-8";
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    /*纵轴居中轴*/
+    justify-content: center;
+    /*横轴向右停靠align-items: end;*/
+    align-items: center;
+    /*具体参数*/
+    height: 100vh;
+    /*加入之后,无法弹性放大缩小width: 180vh;*/
+
+    background: url("../images/login.jpeg") no-repeat;
+    background-size: cover;
+}
+
+/*背景虚化*/
+.box{
+    /*让背景虚化的边框圆滑一些*/
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 350px;
+    height: 380px;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    border-left: 1px solid rgba(255, 255, 255, 0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    /*背景虚化*/
+    backdrop-filter: blur(10px);
+    /*加深背景虚化的阴影度*/
+    background: rgba(50, 50, 50, 0.2);
+}
+
+/*Login的h2标签的颜色*/
+.box > h2{
+    color: rgba(255, 255 ,0 ,0.9);
+    margin-bottom: 20px;
+}
+
+/*账号：输入框在下面的效果*/
+.box .input-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    margin-bottom: 10px;
+}
+
+/*账号、密码、各输入框的间隔*/
+.box .input-box > label{
+    margin-bottom: 5px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+}
+
+/*注册html时用的css样式表：用户名已被注册，换一个试试吧！*/
+.box .input-box > span{
+    margin-bottom: 5px;
+    color: rgba(255, 0, 0, 1);
+    font-size: 13px;
+}
+
+/*输入框的大小, 背景虚化程度*/
+.box .input-box > input {
+    box-sizing: border-box;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    height: 35px;
+    width: 250px;
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    transition: 0.2s;
+    outline: none;
+    padding: 0 10px;
+    /*字母间距*/
+    letter-spacing: 1px;
+}
+
+.box .input-box > input:focus{
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+/*注册/登录/忘记密码的换行*/
+.box .btn-box {
+    width: 250px;
+    display: flex;
+    /*向左停靠*/
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+
+.box .btn-box > a {
+    font-size: 14px;
+    text-decoration: none;
+    /*忘记密码?的颜色*/
+    color: rgba(255, 255, 255, 0.9);
+    transition: 0.2s;
+    width: 250px;
+    /*向右停靠*/
+    text-align: end;
+}
+
+.box .btn-box > a:hover{
+    color: rgba(255, 255, 255, 1);
+}
+
+.box .btn-box > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: start;
+    /*忘记密码?与登录、重置的行距*/
+    margin-top: 20px;
+}
+
+.box .btn-box > div > input {
+    width: 120px;
+    height: 35px;
+    border: 1px solid rgba(197, 81, 58, 0.8);
+    /*按钮的颜色,选取与背景body相近的颜色*/
+    background: rgba(197, 81, 58, 0.5);
+    /*字体颜色*/
+    color: rgba(255, 255, 255, 0.9);
+    /*让按钮边框稍微圆滑一些*/
+    border-radius: 5px;
+    transition: 0.2s;
+}
+
+/*登录和注册按钮之间的间隔*/
+.box .btn-box > div > input:nth-of-type(2){
+    margin-left: 10px;
+}
+
+
+.box .btn-box > div > input:hover {
+    border: 1px solid rgba(248, 108, 76, 0.8);
+    background: rgba(248, 108, 76, 0.5);
+
+}
