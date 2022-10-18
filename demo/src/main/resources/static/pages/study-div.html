@@ -29,6 +29,8 @@
       </div>
 
     <div id="app">
+        <el-page-header @back="goBack" content="div"></el-page-header>
+
         <el-container>
             <el-header><div style="color: yellow; background-color: red">div常用属性</div></el-header>
             <el-main>
@@ -110,7 +112,13 @@
 
 <script>
     new Vue({
-        el: "#app"
+        el: "#app",
+        methods: {
+            goBack() {
+                //返回目录
+                window.location.href="A-context.html"
+            }
+        }
     })
 </script>
 </html>

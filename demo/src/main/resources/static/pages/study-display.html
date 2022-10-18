@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>display布局</title>
+    <!--vue \ axios-->
+    <script src="../js/vue.js"></script>
+    <script src="../js/axios-0.18.0.js"></script>
+
+    <!--MD5 加密-->
+    <script src="../js/md5.min.js"></script>
+
+    <script src="../js/index.js"></script>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+
+    <!--ElementUI-->
+    <script src="../js/index.js"></script>
+    <!-- 引入样式 -->
+    <!-- 引入ElementUI样式 -->
+    <link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../css/study-div.css"/>
+
+</head>
+<body>
+    <div id="app">
+        <el-page-header @back="goBack" content="display"></el-page-header>
+
+        <el-container>
+            <el-main><a href="https://www.cnblogs.com/pinenut/p/16312256.html">阅读原文</a> </el-main>
+
+            <el-header><div style="color: yellow; background-color: red">一、Display简介
+
+                　　display 属性规定是否/如何显示元素。每个 HTML 元素都有一个默认的 display 值，具体取决于它的元素类型。大多数元素的默认 display 值为 inline{行内元素} 或 block（块级元素）。</div></el-header>
+            <el-main>
+                二、Display常用布局
+                <el-popover
+                        placement="bottom"
+                        title="1、inline-block"
+                        width="200"
+                        trigger="click"
+                        content="inline-block看上去是inline和block是一个混合产物，实际上确是如此，将块级元素显示为行内块状元素，设置该属性后，其他的行内块级元素会排列在同一行。">
+                    <el-button slot="reference">1、inline-block</el-button>
+                </el-popover>
+                <el-popover
+                        placement="bottom"
+                        title="2、grid"
+                        width="200"
+                        trigger="click"
+                        content="grid布局即网格布局，是一种新的css模型，一般是将一个页面划分成几个主要的区域，定义这些区域的大小、位置和层次等关系，是目前唯一一种css二维布局。">
+                    <el-button slot="reference">2、grid</el-button>
+                </el-popover>
+                <el-popover
+                        placement="bottom"
+                        title="3、flex"
+                        width="200"
+                        trigger="click"
+                        content="Flex是Flexible Box的缩写，意为”弹性布局”，用来为盒状模型提供最大的灵活性。">
+                    <el-button slot="reference">3、flex</el-button>
+                </el-popover>
+            </el-main>
+        </el-container>
+        <el-container>
+            <el-header>
+                三、Flex布局
+
+                　　本文重点讲解flex布局。2009年，W3C提出了一种新的方案—-Flex布局，可以简便、完整、响应式地实现各种页面布局。目前，它已经得到了所有浏览器的支持，Flex布局因其灵活性、通用性，将成为未来布局的首选方案。
+            </el-header>
+            <el-main>　采用Flex布局的元素，称为Flex容器（flex container），简称”容器”。它的所有子元素自动成为容器成员，称为Flex项目（flex item），简称”项目”。</el-main>
+            <el-header>（1） 容器属性
+
+                　　3.1.1 flex-direction属性
+
+                　　flex-direction属性决定主轴的方向（即项目的排列方向）。属性值如下：</el-header>
+            <el-main>
+                <el-popover
+                        placement="bottom"
+                        title="说明"
+                        width="200"
+                        trigger="click"
+                        content="主轴为垂直方向，起点在下沿;备注:默认值">
+                    <el-button slot="reference">column-reverse</el-button>
+                </el-popover>
+                <el-popover
+                        placement="bottom"
+                        title="说明"
+                        width="200"
+                        trigger="click"
+                        content="主轴为垂直方向，起点在上沿">
+                    <el-button slot="reference">column</el-button>
+                </el-popover>
+                <el-popover
+                        placement="bottom"
+                        title="说明"
+                        width="200"
+                        trigger="click"
+                        content="主轴为水平方向，起点在左端">
+                    <el-button slot="reference">row</el-button>
+                </el-popover>
+                <el-popover
+                        placement="bottom"
+                        title="说明"
+                        width="200"
+                        trigger="click"
+                        content="主轴为水平方向，起点在右端">
+                    <el-button slot="reference">row-reverse</el-button>
+                </el-popover>
+            </el-main>
+
+
+            <el-header>　3.1.2 flex-wrap属性
+
+                　　默认情况下，项目都排在一条线（又称”轴线”）上。flex-wrap属性定义，如果一条轴线排不下，如何换行。属性值如下：</el-header>
+            <el-main>
+                <el-popover
+                        placement="bottom"
+                        title="说明"
+                        width="200"
+                        trigger="click"
+                        content="不换行;备注:默认值">
+                    <el-button slot="reference">nowrap </el-button>
+                </el-popover>
+                <el-popover
+                        placement="bottom"
+                        title="说明"
+                        width="200"
+                        trigger="click"
+                        content="换行，第一行在上方">
+                    <el-button slot="reference">wrap </el-button>
+                </el-popover>
+                <el-popover
+                        placement="bottom"
+                        title="说明"
+                        width="200"
+                        trigger="click"
+                        content="换行，第一行在下方">
+                    <el-button slot="reference">wrap-reverse</el-button>
+                </el-popover>
+            </el-main>
+
+            <el-header>　3.1.3 flex-flow
+
+                　　flex-flow属性是flex-direction属性和flex-wrap属性的简写形式，默认值为row nowrap。
+            </el-header>
+
+
+            <el-header>　　3.1.4 justify-content
+
+                　　justify-content属性定义了项目在主轴上的对齐方式。属性值如下：</el-header>
+            <el-main>
+                <el-popover
+                        placement="bottom"
+                        title="说明"
+                        width="200"
+                        trigger="click"
+                        content="左对齐;备注:默认值">
+                    <el-button slot="reference">flex-start </el-button>
+                </el-popover>
+                <el-popover
+                        placement="bottom"
+                        title="说明"
+                        width="200"
+                        trigger="click"
+                        content="右对齐">
+                    <el-button slot="reference">flex-end </el-button>
+                </el-popover>
+                <el-popover
+                        placement="bottom"
+                        title="说明"
+                        width="200"
+                        trigger="click"
+                        content="居中">
+                    <el-button slot="reference">center</el-button>
+                </el-popover>
+                <el-popover
+                        placement="bottom"
+                        title="说明"
+                        width="200"
+                        trigger="click"
+                        content="两端对齐，项目之间的间隔都相等">
+                    <el-button slot="reference">space-between </el-button>
+                </el-popover>
+                <el-popover
+                        placement="bottom"
+                        title="说明"
+                        width="200"
+                        trigger="click"
+                        content="每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍">
+                    <el-button slot="reference">space-around	 </el-button>
+                </el-popover>
+            </el-main>
+
+
+            <el-header>　　3.1.5 align-items
+
+                　　align-items属性定义项目在交叉轴上如何对齐。属性值如下：</el-header>
+            <el-main>
+                <el-popover
+                        placement="bottom"
+                        title="说明"
+                        width="200"
+                        trigger="click"
+                        content="交叉轴的起点对齐">
+                    <el-button slot="reference">flex-start </el-button>
+                </el-popover>
+                <el-popover
+                        placement="bottom"
+                        title="说明"
+                        width="200"
+                        trigger="click"
+                        content="交叉轴的终点对齐">
+                    <el-button slot="reference">flex-end </el-button>
+                </el-popover>
+                <el-popover
+                        placement="bottom"
+                        title="说明"
+                        width="200"
+                        trigger="click"
+                        content="交叉轴的中点对齐">
+                    <el-button slot="reference">center</el-button>
+                </el-popover>
+                <el-popover
+                        placement="bottom"
+                        title="说明"
+                        width="200"
+                        trigger="click"
+                        content="项目的第一行文字的基线对齐">
+                    <el-button slot="reference">baseline</el-button>
+                </el-popover>
+                <el-popover
+                        placement="bottom"
+                        title="说明"
+                        width="200"
+                        trigger="click"
+                        content="如果项目未设置高度或设为auto，将占满整个容器的高度;备注:默认值">
+                    <el-button slot="reference">stretch </el-button>
+                </el-popover>
+            </el-main>
+        </el-container>
+
+        <el-popover
+                placement="bottom"
+                title="标题"
+                width="200"
+                trigger="click"
+                content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+            <el-button slot="reference">click激活</el-button>
+        </el-popover>
+
+
+    </div>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                visible: false
+            },
+            methods: {
+                goBack() {
+                    //返回目录
+                    window.location.href="A-context.html"
+                }
+            }
+        })
+    </script>
+</body>
+</html>

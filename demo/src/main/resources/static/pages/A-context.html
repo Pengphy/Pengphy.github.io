@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>目录</title>
+    <!--vue \ axios-->
+    <script src="../js/vue.js"></script>
+    <script src="../js/axios-0.18.0.js"></script>
+
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!--MD5-->
+    <script src="../js/md5.min.js"></script>
+
+    <!--ElementUI-->
+    <script src="../js/index.js"></script>
+    <!-- 引入ElementUI样式 -->
+    <link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+
+
+</head>
+<body>
+    <div id="app">
+        <el-page-header @back="goBack" content="目录"></el-page-header>
+    </div>
+    <!--01-div常用属性-->
+    <a href="study-div.html">01-div常用属性</a>
+
+    <!--02-display布局-->
+    <a href="study-display.html">02-display布局</a>
+</body>
+
+<script>
+    new Vue({
+        el: "#app",
+        methods: {
+            goBack() {
+                //返回首页
+                window.location.href="../../../../../../index.html"
+            }
+        }
+    })
+</script>
+</html>
